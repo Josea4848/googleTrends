@@ -1,7 +1,7 @@
 # googleTrends
 
 ## Resumo
-Este programa baixa dados (em csv) por meio do Google Trends.
+Esse programa baixa dados (em csv) por meio do Google Trends.
 
 ## Requisitos
 - [Python](https://www.python.org/) v3.11.0+
