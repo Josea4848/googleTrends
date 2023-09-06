@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from time import sleep
+from selenium.webdriver.edge.service import Service
 
 class trendsBot:
   def __init__(self, downloadPath):
@@ -10,10 +11,11 @@ class trendsBot:
     :param downloadPath: string
     """
     #Configuração do Microsoft Edge
+    self.service = Service()
     self.edgeConfig = webdriver.EdgeOptions()
     self.prefs = {"download.default_directory" : downloadPath}
     self.edgeConfig.add_experimental_option("prefs", self.prefs)
-    self.driver = webdriver.Edge(options=self.edgeConfig)
+    self.driver = webdriver.Edge(service=service, options=options)
     self.driver.get('https://trends.google.com.br/trends/')
     sleep(2)
   def downloadCsv(self, movie):
@@ -49,7 +51,7 @@ class trendsBot:
       return True
     return False
 
-app = trendsBot("path aqui :)") #em caso de path inválido, o padrão será Downloads
+app = trendsBot("/home/jose/Downloads") #em caso de path inválido, o padrão será Downloads
 try:
   app.downloadCsv("nome do filme")
 except:
