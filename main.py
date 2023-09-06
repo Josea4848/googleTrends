@@ -15,7 +15,7 @@ class trendsBot:
     self.edgeConfig = webdriver.EdgeOptions()
     self.prefs = {"download.default_directory" : downloadPath}
     self.edgeConfig.add_experimental_option("prefs", self.prefs)
-    self.driver = webdriver.Edge(service=service, options=options)
+    self.driver = webdriver.Edge(service=self.service, options=self.edgeConfig)
     self.driver.get('https://trends.google.com.br/trends/')
     sleep(2)
   def downloadCsv(self, movie):
