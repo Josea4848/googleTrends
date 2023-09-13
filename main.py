@@ -19,21 +19,11 @@ class trendsBot:
     self.chromeConfig.add_extension("extension_0_145_0_0.crx")
     self.chromeConfig.add_extension("extension_1_52_0_0.crx")
     self.driver = webdriver.Chrome(service=self.service, options=self.chromeConfig)
-    #self.driver.get('https://trends.google.com/trends/?')
-    self.geraConta()
-    #self.login(email)
-  def login(self, email):
     try:
-      self.driver.switch_to.new_window('tab')
-      self.driver.get('https://meetglimpse.com/sign-up')
-      sleep(2)
-      self.emaillogin = self.driver.find_element(By.ID, 'email')
-      self.emaillogin.click()
-      self.emaillogin.send_keys(email)
-      self.emaillogin.send_keys(Keys.ENTER)
+      self.geraConta()
     except:
-      print("ERRO")
-  
+      print("erro ao criar conta! :(")
+
   def downloadCsv(self, movie):
     """
     Baixa o csv para o path
@@ -52,6 +42,8 @@ class trendsBot:
       searchInput.send_keys(Keys.ENTER)
       sleep(2)
       
+      self.removeMsg()
+
       try:
         self.removeMensage()
       except:
@@ -125,7 +117,7 @@ class trendsBot:
     #Confirma email
     self.driver.switch_to.window(self.window_Gen)
     self.driver.find_element(By.ID, "refresh").click()
-    sleep(5)
+    sleep(15)
     self.driver.find_element(By.XPATH, "//a[@class='hover-bg-brand-600']").click()
     #Realiza procedimentos necessários para usar o glimpse
     self.driver.switch_to.window(self.window_Login)
@@ -143,6 +135,18 @@ class trendsBot:
     sleep(3)
     #Ativa extensão
     self.ativaBotao()
+
+  def removeMsg(self):
+    try:
+      self.driver.execute_script("""
+      let l = document.getElementsByClassName("button button--primary button--lg")[0];
+      l.click();                           
+      """)
+    except:
+      print("Sem mensagem")
+
+  def closeBrowser(self):
+    self.driver.close()
 
 path = "/home/jose/Downloads/CSVFILMES"
 
@@ -162,4 +166,6 @@ while(len(filmes)):
       filmes.pop(0)
     except:
       print("Erro")
+      app.closeBrowser()
+      sleep(5)
       break
