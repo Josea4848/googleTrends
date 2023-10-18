@@ -38,7 +38,7 @@ class trendsBot:
       sleep(1)
       searchInput.clear()
       searchInput.send_keys(movie)
-      sleep(0.5)
+      sleep(2)
       searchInput.send_keys(Keys.ENTER)
       sleep(2)
       
@@ -57,13 +57,22 @@ class trendsBot:
           self.verificado = 1
         except:
           print("Erro ao verificar")
-      #Seleciona período
+
+      sleep(3000)
+      #Seleciona período 
       periodoBtn = self.driver.find_element(By.ID, 'select_value_label_9')
       periodoBtn.click()
+      sleep(1)
+      periodo = self.driver.find_element(By.ID, 'select_option_17')
+      periodo.click()
+      sleep(2)
+      periodoBtn = self.driver.find_element(By.ID, 'select_value_label_9')
+      periodoBtn.click()
+      sleep(1)
       periodo = self.driver.find_element(By.ID, 'select_option_21')
       sleep(2)
       periodo.click()
-      sleep(3)
+      sleep(15)
       #Baixa CSV para path
       svgOption = self.driver.find_element(By.XPATH, "//div[@class='fe-atoms-generic-header-container fe-line-chart-header-container fe-atoms-generic-separator']//span[@class='glimpse-actions-toggle']//*[name()='svg']")
       svgOption.click()
@@ -73,7 +82,7 @@ class trendsBot:
       sleep(2)
       csvBtn = self.driver.find_element(By.XPATH, "//button[normalize-space()='Download CSV']")
       csvBtn.click()
-      sleep(0.5)
+      sleep(1)
     else:
       print("Nome inválido")
 
@@ -116,8 +125,11 @@ class trendsBot:
     inputEmail.send_keys(Keys.ENTER)
     #Confirma email
     self.driver.switch_to.window(self.window_Gen)
+    sleep(3)
     self.driver.find_element(By.ID, "refresh").click()
-    sleep(15)
+    sleep(2)
+    self.driver.find_element(By.ID, "refresh").click()
+    sleep(30)
     self.driver.find_element(By.XPATH, "//a[@class='hover-bg-brand-600']").click()
     #Realiza procedimentos necessários para usar o glimpse
     self.driver.switch_to.window(self.window_Login)
@@ -128,7 +140,7 @@ class trendsBot:
     sleep(3)
     self.driver.find_element(By.XPATH, "//body[1]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[2]/button[1]").click()
     sleep(3)
-    self.driver.find_element(By.ID, "goal").send_keys("Qualquer coisa")
+    self.driver.find_element(By.ID, "viewSource").send_keys("Qualquer coisa")
     sleep(1)
     self.driver.find_element(By.XPATH, "//button[@type='submit']").click()
     self.driver.get("https://trends.google.com/trends/?")
@@ -146,12 +158,12 @@ class trendsBot:
       print("Sem mensagem")
 
   def closeBrowser(self):
-    self.driver.close()
+    self.driver.quit()
 
-path = "/home/jose/Downloads/CSVFILMES"
+path = "/home/jose/Downloads/CSVACTORS"
 
 #Armazenando filmes em lista
-arquivo = open("filmes.txt")
+arquivo = open("actors1.txt")
 linhas = arquivo.readlines()
 filmes = list()
 for linha in linhas:
@@ -159,7 +171,6 @@ for linha in linhas:
 
 while(len(filmes)):
   app = trendsBot(path)
-  sleep(10)
   while(True):
     try:
       app.downloadCsv(filmes[0])
@@ -167,5 +178,4 @@ while(len(filmes)):
     except:
       print("Erro")
       app.closeBrowser()
-      sleep(5)
       break
